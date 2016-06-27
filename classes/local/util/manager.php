@@ -207,6 +207,10 @@ class manager {
         if ($this->should_have('events')) {
             $this->prepare_events();
         }
+
+        if ($this->should_have('backup_moodle2')) {
+            $this->prepare_backup_moodle2();
+        }
     }
 
     /**
@@ -294,6 +298,37 @@ class manager {
         }
     }
 
+    /*
+     * Prepares the skeleton files for the 'backup_moodle2' feature.
+     */
+    public function prepare_backup_moodle2() {
+
+        // TODO: Lib.php will advertise the fact that the plugin supports backup.
+        /*
+        if (!isset($this->files['lib.php'])) {
+            $this->prepare_file_skeleton('lib.php', 'lib_php_file', 'lib');
+        }
+         */
+
+        $componentname = $this->recipe['component_name'];
+        $this->prepare_file_skeleton('backup/moodle2/backup_'.$componentname.'_activity_task.class.php', 'backup_activity_task_file',
+                                     'backup/moodle2/backup_activity_task_class');
+
+        $this->prepare_file_skeleton('backup/moodle2/backup_'.$componentname.'_stepslib.php', 'php_internal_file',
+                                     'backup/moodle2/backup_stepslib');
+
+        if ($this->should_have('settingslib')) {
+            $this->prepare_file_skeleton('backup/moodle2/backup_'.$componentname.'_settingslib.php', 'php_internal_file',
+                'backup/moodle2/backup_settingslib');
+        }
+
+        $this->prepare_file_skeleton('backup/moodle2/restore_'.$componentname.'_activity_task.class.php', 'php_internal_file',
+                                     'backup/moodle2/restore_activity_task_class');
+
+        $this->prepare_file_skeleton('backup/moodle2/restore_'.$componentname.'_stepslib.php', 'php_internal_file',
+                                     'backup/moodle2/restore_stepslib');
+    }
+
     /**
      * Registers a new file skeleton
      *
@@ -370,6 +405,18 @@ class manager {
 
         if ($feature === 'mobile_addons') {
             return !empty($this->recipe['mobile_addons']);
+        }
+
+        if ($feature === 'backup_moodle2') {
+            return !empty($this->recipe['backup_moodle2']);
+        }
+
+        if ($feature === 'settingslib') {
+
+            $shouldhavebackup = $this->should_have('backup_moodle2');
+            $notempty = !empty($this->recipe['backup_moodle2']['settingslib']);
+
+            return $shouldhavebackup && $notempty && ($this->recipe['backup_moodle2']['settingslib'] === true);
         }
 
         return false;
