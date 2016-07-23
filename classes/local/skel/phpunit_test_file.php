@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides tool_pluginskel\local\skel\php_library_file class.
+ * Provides tool_pluginskel\local\skel\phpunit_test_file class.
  *
  * @package     tool_pluginskel
  * @subpackage  skel
@@ -25,31 +25,29 @@
 
 namespace tool_pluginskel\local\skel;
 
+use tool_pluginskel\local\util\exception;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Class representing a Moodle library file.
+ * Class representing the phpunit test file.
  *
- * Moodle library files contain functions and/or classes.
- *
- * @copyright   2016 Alexandru Elisei <alexandru.elisei@gmail.com>, David Mudrák <david@moodle.com>
+ * @copyright   2016 Alexandru Elisei <alexandru.elisei@gmail.com>
  * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class php_library_file extends php_internal_file {
+class phpunit_test_file extends php_internal_file {
 
     /**
-     * Adds an array of functions.
+     * Adds the classname of the class.
      *
-     * @param string[] $functions The name of the functions.
+     * @param string $classname.
      */
-    public function add_functions($functions) {
+    public function set_classname($classname) {
 
         if (empty($this->data)) {
             throw new coding_exception('Skeleton data not set');
         }
 
-        foreach ($functions as $function) {
-            $this->data['self']['functions'][$function] = true;
-        }
+        $this->data['self']['classname'] = $classname;
     }
 }

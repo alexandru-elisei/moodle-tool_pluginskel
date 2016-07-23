@@ -26,4 +26,3 @@
 defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'Moodle plugin skeleton generator';
-$string['skeletondatanotset'] = 'Skeleton data not set';
